@@ -12,7 +12,9 @@ public class NavAgentExample : MonoBehaviour
     public bool              HasPath         = false;
     public bool              PathPending     = false;
     public bool              PathStale       = false;
+    public bool              OnOffMeshLink   = false;
     public NavMeshPathStatus PathStatus      = NavMeshPathStatus.PathInvalid;
+    public AnimationCurve    jumpCurve       = new AnimationCurve();
 
     //Private
     private NavMeshAgent navAgent = null;
@@ -46,16 +48,41 @@ public class NavAgentExample : MonoBehaviour
 
     void Update()
     {
-        HasPath     = navAgent.hasPath;
-        PathPending = navAgent.pathPending;
-        PathStale   = navAgent.isPathStale;
-        PathStatus  = navAgent.pathStatus;
+        HasPath         = navAgent.hasPath;
+        PathPending     = navAgent.pathPending;
+        PathStale       = navAgent.isPathStale;
+        PathStatus      = navAgent.pathStatus;
 
-        if ((!HasPath && !PathPending) || PathStatus == NavMeshPathStatus.PathInvalid) {
+        if (navAgent.isOnOffMeshLink) {
+            StartCoroutine(Jump(1.0f, navAgent.destination, CurrentIndex));
+            return;
+        }
+
+        if ((navAgent.remainingDistance <= navAgent.stoppingDistance && !PathPending && !OnOffMeshLink) || PathStatus == NavMeshPathStatus.PathInvalid) {
             SetNextDestination(true);
         }
         else if (PathStale) {
             SetNextDestination(false);
         }
+    }
+
+    private IEnumerator Jump(float duration, Vector3 dest, int index) {
+        OffMeshLinkData data = navAgent.currentOffMeshLinkData;
+        Vector3 startPos     = navAgent.transform.position;
+        Vector3 endpos       = data.endPos + (navAgent.baseOffset * Vector3.up);
+        float time = 0;
+        OnOffMeshLink = true;
+
+        while (time <= duration) {
+            float t = time/duration;
+            navAgent.Warp(Vector3.Lerp(startPos, endpos, t) + jumpCurve.Evaluate(t) * Vector3.up);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        
+        navAgent.CompleteOffMeshLink();
+        navAgent.destination = dest;
+        CurrentIndex = index;
+        OnOffMeshLink = false;
     }
 }
