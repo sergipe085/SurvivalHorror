@@ -34174,7 +34174,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2022159729}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -22.47, y: 2.2, z: 10.85}
+  m_LocalPosition: {x: -0.79, y: 0, z: 17.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1164442968}
@@ -34204,7 +34204,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2063362644}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.47, y: 2.2, z: 3.67}
+  m_LocalPosition: {x: -28.41, y: 0, z: 19.93}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1164442968}
@@ -34898,6 +34898,7 @@ GameObject:
   m_Component:
   - component: {fileID: 543450652441921147}
   - component: {fileID: 5866666020751318017}
+  - component: {fileID: 919132148172135619}
   - component: {fileID: 919132148172135618}
   m_Layer: 0
   m_Name: Jill
@@ -34915,9 +34916,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 919132148172135617}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa02ec60a021f5e47947fbb84776ebb4, type: 3}
+  m_Script: {fileID: 11500000, guid: a2e7c378c0f14b445a013916f49cedc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WaypointNetwork: {fileID: 790168052}
+  CurrentIndex: 0
+  HasPath: 0
+  PathPending: 0
+  PathStale: 0
+  OnOffMeshLink: 0
+  PathStatus: 2
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!195 &919132148172135619
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148172135617}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 5.66
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!4 &936440892355365631
 Transform:
   m_ObjectHideFlags: 0
@@ -37118,7 +37154,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 07195397688af8d4ba222e265f8d6391, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
