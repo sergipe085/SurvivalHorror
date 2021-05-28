@@ -17,13 +17,18 @@ public class NavAgentNoRootMotion : MonoBehaviour
     public AnimationCurve    jumpCurve       = new AnimationCurve();
 
     //Private
-    private NavMeshAgent navAgent = null;
-    private Animator     animator = null;
+    private NavMeshAgent navAgent         = null;
+    private Animator     animator         = null;
+    private float        originalMaxSpeed = 0f;
 
     void Start()
     {
         navAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+
+        if (navAgent) {
+            originalMaxSpeed = navAgent.speed;
+        }
 
         if (WaypointNetwork == null) return;
 
@@ -50,6 +55,8 @@ public class NavAgentNoRootMotion : MonoBehaviour
 
     void Update()
     {
+        int turnOnSpot = 0;
+
         HasPath         = navAgent.hasPath;
         PathPending     = navAgent.pathPending;
         PathStale       = navAgent.isPathStale;
@@ -59,8 +66,18 @@ public class NavAgentNoRootMotion : MonoBehaviour
         float horizontal = cross.y < 0 ? -cross.magnitude : cross.magnitude;
         horizontal = Mathf.Clamp(horizontal * 2.32f, -2.32f, 2.32f);
 
+        if (navAgent.velocity.magnitude < 1.0f && Vector3.Angle(transform.forward, navAgent.desiredVelocity) > 10.0f) {
+            navAgent.speed = 0.1f;
+            turnOnSpot = (int)Mathf.Sign(horizontal);
+        }
+        else {
+            navAgent.speed = originalMaxSpeed;
+            turnOnSpot = 0;
+        }
+
         animator.SetFloat("Horizontal", horizontal, 0.1f, Time.deltaTime);
         animator.SetFloat("Vertical", navAgent.desiredVelocity.magnitude, 0.1f, Time.deltaTime);
+        animator.SetInteger("TurnOnSpot", turnOnSpot);
 
         /*
         if (navAgent.isOnOffMeshLink) {
@@ -70,6 +87,7 @@ public class NavAgentNoRootMotion : MonoBehaviour
         */
 
         if ((navAgent.remainingDistance <= navAgent.stoppingDistance && !PathPending && !OnOffMeshLink) || PathStatus == NavMeshPathStatus.PathInvalid) {
+
             SetNextDestination(true);
         }
         else if (PathStale) {
