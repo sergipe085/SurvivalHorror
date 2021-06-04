@@ -61,7 +61,7 @@ public class NavAgentRootMotion : MonoBehaviour
         Vector3 localDesiredVelocity = transform.InverseTransformVector(navAgent.desiredVelocity);
         float angle = Mathf.Atan2(localDesiredVelocity.x, localDesiredVelocity.z) * Mathf.Rad2Deg;
         smoothAngle = Mathf.MoveTowardsAngle(smoothAngle, angle, 80.0f * Time.deltaTime);
-        float speed = localDesiredVelocity.magnitude;
+        float speed = localDesiredVelocity.z;
 
         animator.SetFloat("Angle", smoothAngle);
         animator.SetFloat("Speed", speed, 0.1f, Time.deltaTime);
