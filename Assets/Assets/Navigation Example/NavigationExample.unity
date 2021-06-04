@@ -34980,6 +34980,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  MixedMode: 1
 --- !u!4 &936440892355365631
 Transform:
   m_ObjectHideFlags: 0
